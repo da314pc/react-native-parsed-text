@@ -13,6 +13,8 @@
 /**
  * Class to encapsulate the business logic of converting text into matches & props
  */
+import runes from 'runes'
+
 class TextExtraction {
   /**
    * @param {String} text - Text to be parsed
@@ -60,7 +62,7 @@ class TextExtraction {
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec
         pattern.pattern.lastIndex = 0;
         while (textLeft && (matches = pattern.pattern.exec(textLeft))) {
-          let previousText = textLeft.substr(0, matches.index);
+          let previousText = runes.substr(textLeft, 0, matches.index);
           indexOfMatchedString = matches.index;
 
           if (++currentMatches > numberOfMatchesPermitted) {
@@ -78,8 +80,8 @@ class TextExtraction {
               indexOfMatchedString,
             ),
           );
-
-          textLeft = textLeft.substr(matches.index + matches[0].length);
+          
+          textLeft = runes.substr(textLeft, matches.index + matches[0].length);
           indexOfMatchedString += matches[0].length - 1;
           // Global RegExps are stateful, this makes it operate on the "remainder" of the string
           pattern.pattern.lastIndex = 0;
